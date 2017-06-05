@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            width: 500px;
+            height: 200px;
+        }
+        
+        .text {
+            width: 400px;
+        }
+        
+        .now {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <p>用户名</p>
+        <input type="text" name="" value="">
+        <p>内容</p>
+        <textarea id="content" rows="5" cols="30"></textarea>
+        <input type="button" name="" value="提交">
+    </div>
+    <div>
+        <table class="text">
+            <tr>
+                <td>用户</td>
+                <td>内容</td>
+            </tr>
+        </table>
+    </div>
+    <script src="jquery.js"></script>
+    <script>
+        var btn = document.getElementsByTagName('input');
+        var content = document.getElementById('content');
+        var db = openDatabase('mydb', '1.0', 'text', 3 * 1024 * 1024);
+        var msg;
+        var str;
+        //提交数据
+        btn[1].onclick = function() {
+            if (content.value != '' && btn[0].value != '') {
+                db.transaction(function(tx) {
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+                    tx.executeSql('INSERT INTO LOGS (id, log) VALUES (?,?)', [btn[0].value, content.value]);
+                    msg = "<tr><td class = 'name'>" + btn[0].value + "</td>" + "<td>" + content.value + "</td>" + "<td class='now'>删除</td></tr>";
+                    document.querySelector('.text').innerHTML += msg;
+                    location = location;
+                    content.value = '';
+                    btn[0].value = '';
+                    alert('发表成功');
+                })
+            } else {
+                alert('请输入内容');
+            }
+        }
+
+        db.transaction(function(tx) {
+            tx.executeSql('SELECT * FROM LOGS ', [], function(tx, results) {
+
+                var len = results.rows.length,
+                    i;
+                for (i = 0; i < len; i++) {
+                    msg = "<tr><td class='name'>" + results.rows.item(i).id + "</td>" + "<td>" + results.rows.item(i).log + "</td>" + "<td class='now'>删除</td>" + " </tr>";
+                    document.querySelector('.text').innerHTML += msg;
+                }
+                // 删除
+                $.each($('.now'), function(index) {
+                    $('.now').eq(index).click(function() {
+                        Delete($(this).siblings('.name').html())
+                        $(this).parent().remove();
+                    })
+
+                })
+
+            }, null)
+        })
+
+        function Delete(id) {
+            db.transaction(function(tx) {
+                tx.executeSql('DELETE FROM LOGS WHERE id=?', [id]);
+            });
+        }
+    </script>
+
+</html>
