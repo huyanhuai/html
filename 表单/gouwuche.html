@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="checkbox" name="" value="电风扇">电风扇
+    <input type="checkbox" name="" value="空调">空调
+    <input type="checkbox" name="" value="巧乐兹"> 巧乐兹
+    <input type="checkbox" name="" value="冰工厂">冰工厂
+    <input type="checkbox" name="" value="冰箱">冰箱
+</body>
+<script>
+    var btn = document.getElementsByTagName('input');
+    // btn[0].onclick = function() {
+    //     window.localStorage.setItem('value', btn[0].value);
+    //     console.log(btn[0].value);
+    // }
+    for (var i = 0; i < btn.length; i++) {
+        btn[i].onclick = function() {
+            // window.localStorage.setItem('value', btn[i].value);
+            // console.log(btn[i].value);
+            if (this.checked) {
+                localStorage.setItem('addshop', this.value);
+            } else {
+                localStorage.setItem('rmshop', this.value);
+            }
+
+        }
+    }
+
+    window.addEventListener('storage', function(ev) {
+        console.log(ev);
+        if (ev.key == 'addshop') {
+            for (var i = 0; i < btn.length; i++) {
+                if (ev.newValue == btn[i].value) {
+                    btn[i].checked = true;
+                }
+            }
+        } else if (ev.key == 'rmshop') {
+            for (var i = 0; i < btn.length; i++) {
+                if (ev.newValue == btn[i].value) {
+                    btn[i].checked = false;
+                }
+            }
+        }
+    })
+
+    //
+    var btn = document.getElementsByTagName('input');
+    for (var i = 0; i < btn.length; i++) {
+        btn[i].onclick = function() {
+            if (this.checked) {
+                localStorage.setItem('addshop', this.value);
+            } else {
+                localStorage.setItem('rmshop', this.value);
+            }
+
+        }
+    }
+
+    window.addEventListener('storage', function(ev) {
+        console.log(ev);
+        if (ev.key == 'addshop') {
+            for (var i = 0; i < btn.length; i++) {
+                if (ev.newValue == btn[i].value) {
+                    btn[i].checked = true;
+                }
+            }
+        } else if (ev.key == 'rmshop') {
+            for (var i = 0; i < btn.length; i++) {
+                if (ev.newValue == btn[i].value) {
+                    btn[i].checked = false;
+                }
+            }
+        }
+    })
+</script>
+
+</html>

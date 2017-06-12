@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1000px" height="1000px"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+
+    // 创建渐变
+    var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop("0", "magenta");
+    gradient.addColorStop("0.5", "blue");
+    gradient.addColorStop("1.0", "red");
+    // 用渐变填色
+    ctx.fillStyle = gradient;
+
+    ctx.font = "40px 微软雅黑";
+    ctx.fillText('你好', 100, 100);
+
+    //textAlign
+    ctx.strokeStyle = "blue";
+    ctx.moveTo(200, 300);
+    ctx.lineTo(200, 450);
+    ctx.stroke();
+
+    ctx.font = "15px 微软雅黑";
+    // 显示不同的 textAlign 值
+    ctx.textAlign = "start";
+    ctx.fillText("textAlign=start", 200, 360);
+    ctx.textAlign = "end";
+    ctx.fillText("textAlign=end", 200, 380);
+    ctx.textAlign = "left";
+    ctx.fillText("textAlign=left", 200, 400);
+    ctx.textAlign = "center";
+    ctx.fillText("textAlign=center", 200, 420);
+    ctx.textAlign = "right";
+    ctx.fillText("textAlign=right", 200, 440);
+</script>
+
+</html>

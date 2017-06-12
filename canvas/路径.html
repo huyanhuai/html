@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="800px" height="500px"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+    //画东西
+    ctx.beginPath(); //开始绘制
+    ctx.moveTo(100, 100); //起始点
+    ctx.lineTo(400, 100);
+    ctx.lineTo(200, 200);
+    ctx.closePath();
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = "10";
+    ctx.stroke(); //把刚刚绘制的所有线添加到笔触，显示出来
+    ctx.fillStyle = 'red'; //填充
+    ctx.fill(); //把刚刚绘制的所有线，添加填充色
+</script>
+
+</html>

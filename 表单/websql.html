@@ -9,7 +9,7 @@
     <style>
         #box {
             width: 500px;
-            height: 200px;
+            height: 150px;
         }
         
         .text {
@@ -17,6 +17,9 @@
         }
         
         .now {
+            width: 50px;
+            height: 30px;
+            float: right;
             cursor: pointer;
         }
     </style>
@@ -24,20 +27,18 @@
 
 <body>
     <div id="box">
-        <p>用户名</p>
+        <span>内容</span>
+        <textarea id="content" rows="5" cols="30"></textarea></br>
+        <span>用户名</span>
         <input type="text" name="" value="">
-        <p>内容</p>
-        <textarea id="content" rows="5" cols="30"></textarea>
         <input type="button" name="" value="提交">
     </div>
-    <div>
-        <table class="text">
-            <tr>
-                <td>用户</td>
-                <td>内容</td>
-            </tr>
-        </table>
-    </div>
+    <table class="text">
+        <tr>
+            <td><b>用户名</b></td>
+            <td><b>内容</b></td>
+        </tr>
+    </table>
     <script src="jquery.js"></script>
     <script>
         var btn = document.getElementsByTagName('input');
@@ -45,15 +46,16 @@
         var db = openDatabase('mydb', '1.0', 'text', 3 * 1024 * 1024);
         var msg;
         var str;
-        //提交数据
+        //提交数据库
         btn[1].onclick = function() {
             if (content.value != '' && btn[0].value != '') {
                 db.transaction(function(tx) {
+
                     tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
                     tx.executeSql('INSERT INTO LOGS (id, log) VALUES (?,?)', [btn[0].value, content.value]);
-                    msg = "<tr><td class = 'name'>" + btn[0].value + "</td>" + "<td>" + content.value + "</td>" + "<td class='now'>删除</td></tr>";
+                    msg = "<tr><td class = 'name'>" + btn[0].value + "<td  contenteditable = 'true'>" + content.value + "<td class='now'>删除</td></tr>";
                     document.querySelector('.text').innerHTML += msg;
-                    location = location;
+                    location.href = "websql.html";
                     content.value = '';
                     btn[0].value = '';
                     alert('发表成功');
@@ -63,20 +65,19 @@
             }
         }
 
-
         db.transaction(function(tx) {
             tx.executeSql('SELECT * FROM LOGS ', [], function(tx, results) {
 
                 var len = results.rows.length,
                     i;
                 for (i = 0; i < len; i++) {
-                    msg = "<tr><td class='name'>" + results.rows.item(i).id + "</td>" + "<td>" + results.rows.item(i).log + "</td>" + "<td class='now'>删除</td>" + " </tr>";
+                    msg = "<tr><td class='name'>" + results.rows.item(i).id + "</td>" + "<td  contenteditable = 'true'>" + results.rows.item(i).log + "</td>" + "<td class='now'>删除</td>" + " </tr>";
                     document.querySelector('.text').innerHTML += msg;
                 }
                 // 删除
                 $.each($('.now'), function(index) {
                     $('.now').eq(index).click(function() {
-                        Delete($(this).siblings('.name').html())
+                        fun($(this).siblings('.name').html())
                         $(this).parent().remove();
                     })
 
@@ -85,9 +86,9 @@
             }, null)
         })
 
-        function Delete(id) {
+        function fun(clear) {
             db.transaction(function(tx) {
-                tx.executeSql('DELETE FROM LOGS WHERE id=?', [id]);
+                tx.executeSql('DELETE FROM LOGS WHERE id=?', [clear]);
             });
         }
     </script>

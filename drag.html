@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        li {
+            list-style: none;
+            width: 100px;
+            height: 30px;
+            background: yellow;
+            margin: 10px;
+        }
+        
+        #box {
+            width: 100px;
+            height: 100px;
+            background: red;
+            margin: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <li draggable="true">1</li>
+    <li draggable="true">2</li>
+    <li draggable="true">3</li>
+    <div id="box">
+
+    </div>
+</body>
+<script>
+    var heroli = document.getElementsByTagName('li');
+    var box = document.getElementById('box');
+    for (var i = 0; i < heroli.length; i++) {
+        heroli[i].ondragstart = function() {
+            this.style.background = "green";
+        }
+        heroli[i].ondragend = function() {
+            this.style.background = "yellow";
+        }
+    }
+    box.ondragenter = function() {
+        this.style.background = "blue";
+    }
+    box.addEventListener('drop', fileInfo);
+    box.addEventListener('dragover', onDragOver);
+
+    function fileInfo(ev) {
+        ev.stopPropagetion();
+        ev.preventDefault();
+        console.log(ev.dataTransfer);
+    }
+
+    function onDragOver(ev) {
+        ev.stopPropagetion();
+        ev.preventDefault();
+        console.log("文件拖拽成功");
+
+    }
+</script>
+
+</html>

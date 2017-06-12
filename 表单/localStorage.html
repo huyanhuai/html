@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="button" name="" value="设置">
+    <input type="button" name="" value="读取">
+    <input type="button" name="" value="删除">
+    <input type="text">
+</body>
+<script>
+    var btn = document.getElementsByTagName('input');
+    btn[0].onclick = function() {
+        localStorage.setItem('name', btn[3].value);
+    }
+    btn[1].onclick = function() {
+        console.log(localStorage.getItem('name'))
+    }
+    btn[2].onclick = function() {
+        localStorage.clear()
+    }
+
+    var btn = document.getElementsByTagName('input');
+    btn[0].onclick = function() {
+        sessionStorage.setItem('name', btn[3].value);
+    }
+    btn[1].onclick = function() {
+        console.log(sessionStorage.getItem('name'))
+    }
+    btn[2].onclick = function() {
+        sessionStorage.clear()
+    }
+</script>
+
+</html>

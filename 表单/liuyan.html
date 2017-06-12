@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <textarea rows="10" cols="30" id="text"></textarea>
+    <input type="button" name="" value="提交" id="btn">　</br>
+    <input type="button" name="" value="查询" id="btn2">
+    <input type="button" name="" value="删除" id="btn3">
+    <div id="text2">
+
+    </div>
+
+</body>
+<script src="jquery.js"></script>
+<script>
+    var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+    var e_id = 0;
+    $("#btn").click(function() {
+        var e_log = $("#text").val();
+        console.log(e_log);
+        db.transaction(function(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+            tx.executeSql('INSERT INTO LOGS (id,log) VALUES (?, ?)', [e_id, e_log],
+                function() {
+                    alert("添加成功")
+                },
+                function(tx, error) {
+                    alert('添加数据失败: ' + error.message);
+                })
+        });
+        e_id++;
+    })
+    $("#btn2").click(function() {
+            db.transaction(function(tx) {
+                tx.executeSql('SELECT * FROM LOGS', [], function(tx, results) {
+                    $("#text2").children().remove();
+                    var len = results.rows.length,
+                        i;
+                    msg = "<p>查询记录条数: " + len + "</p>";
+                    document.querySelector('#text2').innerHTML += msg;
+
+                    for (i = 0; i < len; i++) {
+                        var id = results.rows.item(i)['id'];
+                        // var th = document.createElement("div");
+                        // var ad = document.createElement("a");
+                        var msg = "<p><b>" + "<a>删除" + "</a>&nbsp;&nbsp;" + results.rows.item(i).log + "</b></p>";
+                        // document.querySelector('#text2').innerHTML += msg;
+                        $("#text2").append(msg);
+
+                    }
+                }, null);
+            });
+        })
+        // $("#text2").find("a")[0].click(function() {
+        //     db.transaction(function(tx) {
+        //         tx.executeSql('DELETE FROM LOGS WHERE id=?', [id]);
+
+    //     });
+    // })
+
+
+    $("#btn3").click(function() {
+        db.transaction(function(tx) {
+            tx.executeSql('drop table LOGS');
+            $("#text2").children().remove();
+            location = location;
+        });
+    })
+</script>
+
+</html>
